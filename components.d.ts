@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     AppTable: typeof import('./src/components/AppTable/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCell: typeof import('vant/es')['Cell']
     VanField: typeof import('vant/es')['Field']

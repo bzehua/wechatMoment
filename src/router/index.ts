@@ -38,7 +38,23 @@ export const layoutRoutes: Array<RouteRecordRaw> = [
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/wechatMoment'
+  },
+  {
+    path: '/wechatMoment',
+    name: 'wechatMoment',
+    meta: {
+      title: 'wechatMoment'
+    },
+    component: () => import('@/pages/wechatMoment/index.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    meta: {
+      title: 'login'
+    },
+    component: () => import('@/pages/login/index.vue')
   },
   // 不需要layout的页面
   {
@@ -72,14 +88,6 @@ const routes: Array<RouteRecordRaw> = [
       title: 'image-rotate'
     },
     component: () => import('@/pages/image-rotate/index.vue')
-  },
-  {
-    path: '/login',
-    name: 'login',
-    meta: {
-      title: 'login'
-    },
-    component: () => import('@/pages/login/index.vue')
   },
   // 替代vue2中的'*'通配符路径
   { path: '/:pathMatch(.*)*', redirect: '/' }

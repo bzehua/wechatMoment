@@ -35,12 +35,8 @@
   import { FieldType } from 'vant';
   import Api, { LoginParams } from '@/api/user';
   import { useLoading } from '@/hooks';
-  import debug from '@/utils/debug';
-  import watermark from '@/utils/lib/watermark';
-  import copyPaste from '@/utils/lib/copy-paste';
 
   const router = useRouter();
-  const route = useRoute();
   const { startLoading, stopLoading } = useLoading();
 
   const inputType = ref<FieldType>('password');
@@ -49,23 +45,6 @@
     username: '',
     password: ''
   });
-
-  onMounted(() => {
-    // 进入登录页时获取debug参数
-    debug.config(route.query.debug);
-
-    watermark.remove();
-    copyPaste.enable();
-  });
-
-  onBeforeUnmount(() => {
-    // const { username = '', mobile = '' } = auth.getUser();
-    watermark.add({
-      // content: username + ' ' + mobile,
-    });
-    copyPaste.disable();
-  });
-
   const onShowPassword = () => {
     showPassword.value = !showPassword.value;
     inputType.value = showPassword.value ? 'text' : 'password';
