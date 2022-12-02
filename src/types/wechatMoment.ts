@@ -1,5 +1,4 @@
-// 定义一个接口,约束state的数据类型
-export interface WechatMoment {
+export interface MomentItem {
   id: number;
   username: string;
   avator: string;

@@ -1,7 +1,7 @@
 import http, { Response } from '@/utils/http';
 
 export interface LoginParams {
-  username: string;
+  userCode: string;
   password: string;
 }
 
@@ -15,5 +15,5 @@ interface UserInfo {
 export default {
   async login(params: LoginParams) {
     return await http.post<Response<UserInfo>>('/user/login', params);
-  },
+  }
 };

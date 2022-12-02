@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
-  import { useUserStore } from '@/store';
+  import { UserStore } from '@/store/modules/user';
 
-  const userStore = useUserStore();
+  const userStore = UserStore();
 
   const updateName = (isAction: boolean) => {
     if (isAction) {

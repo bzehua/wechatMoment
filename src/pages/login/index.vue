@@ -2,21 +2,23 @@
   <div class="login">
     <div class="content">
       <div class="logo">
-        <img src="@/assets/vue.svg" alt="logo" />
+        <img src="@/assets/moment.svg" alt="logo" />
       </div>
       <van-form @submit="onSubmit" @failed="onFailed">
         <van-field
-          v-model.trim="loginInfo.username"
-          name="username"
+          v-model.trim="loginInfo.userCode"
+          name="userCode"
           clearable
-          placeholder="input username"
+          placeholder="请输入账号"
+          :rules="[{ required: true, message: '请输入账号' }]"
         />
         <van-field
           v-model="loginInfo.password"
           :type="inputType"
           name="password"
           clearable
-          placeholder="input password"
+          placeholder="请输入密码"
+          :rules="[{ required: true, message: '请输入密码' }]"
         >
           <template #button>
             <div @click="onShowPassword">
@@ -25,16 +27,22 @@
             </div>
           </template>
         </van-field>
-        <van-button block type="primary" native-type="submit" class="submit-btn">Login </van-button>
+        <van-button type="primary" size="large" native-type="submit" class="submit-btn">
+          登录
+        </van-button>
       </van-form>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { FieldType } from 'vant';
-  import Api, { LoginParams } from '@/api/user';
+  import { FieldType, Toast } from 'vant';
+  import { LoginParams } from '@/api/user';
   import { useLoading } from '@/hooks';
+  import { UserStore } from '@/store/modules/user';
+  import { MomentItem } from '@/types/wechatMoment';
+
+  const userStore = UserStore();
 
   const router = useRouter();
   const { startLoading, stopLoading } = useLoading();
@@ -42,7 +50,7 @@
   const inputType = ref<FieldType>('password');
   const showPassword = ref(false);
   const loginInfo = reactive<LoginParams>({
-    username: '',
+    userCode: '',
     password: ''
   });
   const onShowPassword = () => {
@@ -50,15 +58,30 @@
     inputType.value = showPassword.value ? 'text' : 'password';
   };
   const onSubmit = async () => {
-    setTimeout(() => {
-      router.push('/index');
-    }, 3000);
-
+    const userId = ref(0);
+    const username = ref('');
+    const userAvator = ref('');
+    const state = reactive<{ momentList: MomentItem[] }>({
+      momentList: []
+    });
+    userStore.userList.forEach((item) => {
+      if (item.userCode === loginInfo.userCode) {
+        userId.value = item.id;
+        username.value = item.username;
+        userAvator.value = item.avator;
+        state.momentList = item.momentList;
+      }
+    });
+    if (!userId) {
+      Toast('该用户不存在');
+      return;
+    }
     startLoading();
-    const { code, result, message } = await Api.login(loginInfo);
     stopLoading();
-    // do something
-    router.push('/index');
+    userStore.updateName(username.value);
+    userStore.updateUserId(userId.value);
+    userStore.updateUserAvator(userAvator.value);
+    router.push('/wechatMoment');
   };
   const onFailed = (errorInfo = {}) => {
     console.log('failed', errorInfo);
@@ -77,7 +100,12 @@
       padding: 40px;
       background-color: #eee;
       .logo {
-        text-align: center;
+        display: flex;
+        justify-content: center;
+        img {
+          width: 50px;
+          height: 50px;
+        }
       }
       .van-form {
         .van-cell {
@@ -85,6 +113,8 @@
         }
         .submit-btn {
           margin-top: 40px;
+          // height: 60px;
+          // font-size: 32px;
         }
       }
     }

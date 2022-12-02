@@ -8,7 +8,7 @@ export function useLoading() {
     toast = Toast.loading({
       duration: 0,
       forbidClick: true,
-      message: 'Loading...',
+      message: 'Loading...'
     });
   };
   const stopLoading = () => {
