@@ -11,7 +11,7 @@
           >{{ momentItem.time }}
           <div class="delete" v-if="momentItem.usreId === userId" @click="handleDelete">删除</div>
         </div>
-        <div class="moment-item-func"></div>
+        <div class="moment-item-func"> .. </div>
       </div>
     </div>
   </div>
